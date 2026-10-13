@@ -1,1 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b13">
+<meta name="description" content="TCH · Thoyajaksh's Career Hub — a student dashboard for career planning, internships, skill roadmaps, placement practice, and project portfolios.">
+<title>TCH · Thoyajaksh's Career Hub</title>
+<link rel="icon" href="logo.png">
 
+<style>
+:root{
+  --bg:#090b13;--bg2:#111521;--panel:rgba(20,25,42,.84);--panel2:#151b2b;
+  --line:rgba(184,193,216,.19);--text:#f2f4fb;--muted:#a4adbf;
+  --cyan:#70dcff;--blue:#6f96ff;--violet:#a991ff;--pink:#ff78b7;
+  --green:#80eac0;--amber:#ffd18a;--danger:#ff8b9a;
+  --radius:22px;--shadow:0 24px 70px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 8% 0%,rgba(62,115,235,.22),transparent 34%),
+    radial-gradient(ellipse at 94% 15%,rgba(255,82,165,.15),transparent 29%),
+    radial-gradient(ellipse at 45% 80%,rgba(137,151,183,.055),transparent 38%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.5
+}
+button,input,select,textarea{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+button{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:3px
+}
+::selection{background:rgba(100,232,255,.25)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.shell{width:min(1440px,100%);margin:auto;padding:0 28px}
+.topbar{position:relative;z-index:20;background:rgba(8,11,19,.92);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.brand{display:flex;align-items:center;gap:12px;min-width:220px}
+.logo{height:43px;width:43px;flex:none;border-radius:14px;display:block;object-fit:contain;overflow:hidden;box-shadow:0 0 28px rgba(100,232,255,.18)}
+.brand-name{font-size:13px;font-weight:850;letter-spacing:.09em;line-height:1.25}
+.brand-name small{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.16em;margin-top:5px}
+.nav-links{display:flex;align-items:center;gap:5px}
+.nav-links a{font-size:13px;color:var(--muted);padding:10px 12px;border-radius:10px;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,.06)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.date-chip,.user-chip{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:13px;padding:9px 12px;font-size:12px;color:var(--muted);white-space:nowrap}
+.user-chip{display:flex;align-items:center;gap:9px;color:var(--text);font-weight:700}
+.avatar{height:27px;width:27px;display:grid;place-items:center;border-radius:9px;background:linear-gradient(135deg,#354c7e,#6f62ad);font-size:12px;font-weight:900}
+.menu-toggle{display:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:11px;cursor:pointer}
+main{padding:34px 0 70px}
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1.25fr .75fr;gap:26px;padding:clamp(26px,4vw,52px);border:1px solid rgba(173,164,255,.27);border-radius:30px;background:linear-gradient(115deg,rgba(22,35,65,.96),rgba(19,23,39,.92) 55%,rgba(57,27,57,.88));box-shadow:var(--shadow)}
+.hero:before{content:"";position:absolute;width:340px;height:340px;right:9%;top:-230px;border-radius:50%;border:1px solid rgba(100,232,255,.22);box-shadow:0 0 0 28px rgba(100,232,255,.025),0 0 0 60px rgba(100,232,255,.02)}
+.hero-copy,.hero-art{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--cyan);font-size:11px;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(116,240,189,.8)}
+h1{font-size:clamp(36px,5.4vw,68px);letter-spacing:-.065em;line-height:1.02;margin:20px 0 18px;max-width:720px}
+.gradient{background:linear-gradient(100deg,var(--cyan),var(--blue) 38%,#c0b5ff 66%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:610px;color:#b2bfd6;font-size:14px;line-height:1.85;margin:0}
+.actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:26px}
+.btn{border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 17px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;transition:transform .2s,filter .2s,background .2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn.primary{color:#07111b;background:linear-gradient(110deg,var(--cyan),#9ab2ff 55%,#ffc0df);box-shadow:0 8px 24px rgba(100,232,255,.12)}
+.btn.secondary{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--text)}
+.btn.small{padding:8px 11px;border-radius:9px;font-size:12px}
+.hero-art{display:grid;place-items:center;min-height:245px}
+.orbit{width:min(290px,80%);aspect-ratio:1;position:relative;border:1px solid rgba(141,177,255,.25);border-radius:50%;display:grid;place-items:center;animation:float 7s ease-in-out infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(141,177,255,.16);border-radius:50%;inset:22px}
+.orbit:after{inset:47px;border-color:rgba(100,232,255,.19)}
+.core{width:105px;height:105px;border-radius:31px;display:grid;place-items:center;font-size:38px;background:linear-gradient(145deg,rgba(100,232,255,.25),rgba(167,139,250,.23));border:1px solid rgba(180,215,255,.38);box-shadow:0 0 60px rgba(100,232,255,.13),inset 0 0 30px rgba(255,255,255,.04);transform:rotate(-8deg)}
+.orbit-tag{position:absolute;display:flex;align-items:center;gap:7px;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:rgba(10,15,28,.9);box-shadow:0 10px 30px rgba(0,0,0,.2);font-size:11px;font-weight:800;white-space:nowrap}
+.orbit-tag span{color:var(--cyan);font-size:14px}
+.tag-one{top:14%;right:-4%}.tag-two{bottom:17%;left:-8%}.tag-three{bottom:5%;right:7%}
+@keyframes float{50%{transform:translateY(-8px) rotate(2deg)}}
+.section{margin-top:38px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:17px}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--cyan);font-weight:850}
+h2{font-size:clamp(21px,2.5vw,28px);letter-spacing:-.04em;margin:5px 0 0}
+.section-desc{font-size:13px;color:var(--muted);margin:5px 0 0}
+.text-link{font-size:12px;color:var(--cyan);font-weight:800;background:none;border:0;cursor:pointer;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.stat,.panel,.feature-card,.job-card,.roadmap-card,.project-card,.arena-card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(23,30,50,.91),rgba(15,19,32,.94));border-radius:var(--radius)}
+.stat{padding:18px;display:flex;align-items:center;gap:14px}
+.stat-icon{height:43px;width:43px;display:grid;place-items:center;border-radius:14px;font-size:18px;background:rgba(100,232,255,.09);border:1px solid rgba(100,232,255,.12)}
+.stat:nth-child(2) .stat-icon{background:rgba(167,139,250,.1)}
+.stat:nth-child(3) .stat-icon{background:rgba(116,240,189,.1)}
+.stat:nth-child(4) .stat-icon{background:rgba(255,210,123,.1)}
+.stat-number{font-size:25px;font-weight:850;letter-spacing:-.05em;line-height:1.1}
+.stat-label{font-size:12px;color:var(--muted);margin-top:5px}
+.dashboard-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.panel{padding:22px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}
+.panel-title{font-size:15px;font-weight:850}.panel-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.progress-wrap{display:flex;align-items:center;gap:16px}
+.progress-ring{width:88px;height:88px;flex:none;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--cyan) var(--progress,35%),rgba(255,255,255,.08) 0);position:relative}
+.progress-ring:before{content:"";position:absolute;inset:7px;background:#111827;border-radius:50%}
+.progress-ring strong{z-index:1;font-size:18px}
+.progress-copy{flex:1}.progress-copy b{font-size:14px}.progress-copy p{font-size:12px;color:var(--muted);margin:5px 0 11px}
+.progress-bar{height:6px;border-radius:20px;background:rgba(255,255,255,.07);overflow:hidden}
+.progress-bar span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .3s}
+.task-list{display:grid;gap:9px;margin-top:18px}
+.task{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025);font-size:13px}
+.task input{accent-color:var(--cyan);width:16px;height:16px;cursor:pointer}
+.task label{flex:1;cursor:pointer}.task.done label{text-decoration:line-through;color:var(--muted)}
+.task-tag{font-size:11px;color:var(--muted);padding:4px 7px;border-radius:7px;background:rgba(255,255,255,.05)}
+.activity-list{display:grid;gap:14px}
+.activity{display:flex;align-items:flex-start;gap:11px}
+.activity-icon{height:34px;width:34px;border-radius:11px;display:grid;place-items:center;background:rgba(167,139,250,.1);flex:none}
+.activity-copy{flex:1}.activity-copy b{font-size:13px;display:block}.activity-copy span{font-size:12px;color:var(--muted);display:block;margin-top:3px}
+.badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.04em;background:rgba(100,232,255,.09);color:var(--cyan);border:1px solid rgba(100,232,255,.13)}
+.badge.green{background:rgba(116,240,189,.09);color:var(--green);border-color:rgba(116,240,189,.15)}
+.badge.amber{background:rgba(255,210,123,.09);color:var(--amber);border-color:rgba(255,210,123,.14)}
+.badge.purple{background:rgba(167,139,250,.1);color:#c7b8ff;border-color:rgba(167,139,250,.16)}
+.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.feature-card{padding:19px;transition:.2s;position:relative;overflow:hidden}
+.feature-card:hover,.job-card:hover,.roadmap-card:hover,.project-card:hover{transform:translateY(-3px);border-color:rgba(100,232,255,.3)}
+.feature-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.feature-icon{height:44px;width:44px;border-radius:14px;display:grid;place-items:center;font-size:20px;background:rgba(100,232,255,.08)}
+.feature-card h3,.job-card h3,.roadmap-card h3,.project-card h3{font-size:15px;margin:0 0 7px;letter-spacing:-.02em}
+.feature-card p,.job-card p,.roadmap-card p,.project-card p{font-size:12px;color:var(--muted);line-height:1.7;margin:0}
+.feature-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:13px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.feature-foot a{color:var(--cyan);font-weight:800}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:15px}
+.search{flex:1;min-width:190px;position:relative}
+.search input{width:100%;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:11px;color:var(--text);padding:11px 13px 11px 36px;font-size:13px}
+.search:before{content:"⌕";position:absolute;left:13px;top:4px;font-size:22px;color:var(--muted)}
+select,.filter-btn{background:rgba(255,255,255,.035);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:10px 12px;font-size:13px;cursor:pointer}
+select option{background:#101729}
+.job-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.job-card{padding:18px;transition:.2s;min-width:0}
+.job-top{display:flex;align-items:flex-start;gap:12px}
+.company-logo{height:42px;width:42px;border-radius:13px;background:linear-gradient(145deg,rgba(100,232,255,.16),rgba(167,139,250,.2));border:1px solid var(--line);display:grid;place-items:center;font-weight:900;font-size:13px;flex:none}
+.job-heading{flex:1;min-width:0}.job-heading h3{margin-bottom:4px}.company{font-size:11px;color:var(--muted)}
+.save-btn{background:transparent;border:1px solid var(--line);border-radius:9px;padding:7px 9px;cursor:pointer;color:var(--muted)}
+.save-btn.saved{color:var(--pink);border-color:rgba(255,131,189,.35);background:rgba(255,131,189,.07)}
+.job-meta{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.meta-chip{font-size:11px;color:#bdc8dc;border:1px solid var(--line);padding:5px 8px;border-radius:8px}
+.job-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:13px;margin-top:14px}
+.job-bottom small{color:var(--muted);font-size:11px}.job-bottom .btn{padding:8px 10px;font-size:12px}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.roadmap-card{padding:19px;transition:.2s}
+.roadmap-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}
+.roadmap-head .feature-icon{height:39px;width:39px;font-size:17px}
+.roadmap-card h3{font-size:15px}.roadmap-card .progress-bar{margin:13px 0 9px}
+.roadmap-foot{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)}
+.roadmap-steps{display:grid;gap:8px;margin-top:14px}
+.roadmap-step{display:flex;gap:9px;align-items:center;font-size:12px;color:#c5d0e2;cursor:pointer}
+.step-dot{height:20px;width:20px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:11px;flex:none}
+.roadmap-step.done .step-dot{background:rgba(116,240,189,.12);border-color:rgba(116,240,189,.25);color:var(--green)}
+.roadmap-step.active .step-dot{border-color:var(--cyan);color:var(--cyan)}
+.roadmap-step:has(input:focus-visible) .step-dot{outline:2px solid var(--cyan);outline-offset:2px}
+.arena-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.arena-card{padding:21px;display:flex;gap:16px;align-items:flex-start;transition:.2s}
+.arena-card:hover{transform:translateY(-3px);border-color:rgba(100,232,255,.3)}
+.arena-icon{height:49px;width:49px;display:grid;place-items:center;border-radius:16px;font-size:23px;background:rgba(167,139,250,.1);flex:none}
+.arena-copy{flex:1}.arena-copy h3{font-size:15px;margin:1px 0 5px}
+.arena-copy p{font-size:12px;color:var(--muted);margin:0 0 13px;line-height:1.7}
+.arena-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.portfolio-head{display:flex;align-items:center;gap:18px;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(115deg,rgba(18,27,47,.9),rgba(22,20,42,.85));margin-bottom:14px}
+.portfolio-mark{height:56px;width:56px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(140deg,rgba(100,232,255,.15),rgba(167,139,250,.2));font-size:25px;flex:none}
+.portfolio-copy{flex:1}.portfolio-copy h3{font-size:16px;margin:0 0 4px}.portfolio-copy p{font-size:12px;color:var(--muted);margin:0}
+.projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.project-card{padding:18px;transition:.2s;min-width:0}
+.project-art{height:100px;border:1px solid var(--line);border-radius:13px;margin-bottom:15px;display:grid;place-items:center;font-size:30px;background:radial-gradient(circle at 30% 30%,rgba(100,232,255,.14),transparent 55%),linear-gradient(135deg,rgba(100,232,255,.04),rgba(167,139,250,.09))}
+.project-card .badge{margin-bottom:10px}
+.project-card .project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.project-tags span{font-size:11px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.045);color:#c0cbe0}
+.project-actions{display:flex;gap:8px;margin-top:15px}.project-actions button,.project-actions a{flex:1}
+.empty{display:none;text-align:center;padding:25px;color:var(--muted);font-size:13px;border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
+.footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:44px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+.footer strong{color:var(--text)}
+.modal-backdrop{position:fixed;inset:0;z-index:50;background:rgba(3,6,12,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}
+.modal{width:min(540px,100%);max-height:88vh;max-height:88dvh;overflow:auto;border:1px solid rgba(163,180,214,.2);border-radius:22px;background:#101729;padding:23px;box-shadow:var(--shadow)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.modal-head h3{margin:0;font-size:18px}
+.modal-note{font-size:12px;color:var(--muted);margin:0 0 14px}
+.modal ul{margin:0;padding-left:18px;display:grid;gap:9px;font-size:13px;color:#c5d0e2;line-height:1.6}
+.close-modal{border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.04);padding:6px 10px;cursor:pointer}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:6px}.field.full{grid-column:1/-1}
+.field label{font-size:11px;color:var(--muted);font-weight:800}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px;font-size:14px}
+.field textarea{min-height:90px;resize:vertical}
+.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.toast{position:fixed;right:22px;bottom:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:80;max-width:min(360px,calc(100vw - 44px));padding:13px 16px;border:1px solid rgba(100,232,255,.25);background:#111d2c;color:var(--text);border-radius:13px;box-shadow:var(--shadow);font-size:13px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1050px){
+  .nav-links{gap:0}.nav-links a{padding:9px 8px}.date-chip{display:none}
+  .hero{grid-template-columns:1fr .65fr}
+  .cards-grid,.roadmap-grid,.projects-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:820px){
+  .shell{padding:0 18px}.nav{min-height:70px}.menu-toggle{display:block}
+  .nav-links{display:none;position:absolute;top:69px;left:0;right:0;padding:12px 18px 18px;background:rgba(8,11,19,.97);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .nav-links.open{display:flex}.nav-links a{flex:1 1 30%;text-align:center}
+  .nav-right .user-chip{display:none}.hero{grid-template-columns:1fr}
+  .hero-art{min-height:200px}.orbit{width:220px}.stats{grid-template-columns:repeat(2,1fr)}
+  .dashboard-grid{grid-template-columns:1fr}.job-grid,.arena-grid{grid-template-columns:1fr}.hero{padding:28px}
+}
+@media(max-width:520px){
+  .shell{padding:0 13px}main{padding-top:20px}.brand{min-width:0;gap:9px}
+  .logo{width:38px;height:38px;border-radius:12px}
+  .brand-name{font-size:11px;letter-spacing:.07em}.brand-name small{font-size:10px}
+  .nav-right{gap:7px}.menu-toggle{padding:8px 10px}
+  .hero{border-radius:22px;padding:24px 19px}.hero h1{font-size:39px}.hero p{font-size:13px}
+  .hero-art{min-height:175px}.orbit{width:185px}.core{width:78px;height:78px;font-size:30px;border-radius:24px}
+  .orbit-tag{font-size:10px;padding:7px 8px}.tag-one{right:-8%}.tag-two{left:-10%}.tag-three{right:0}
+  .stats{gap:9px}.stat{padding:13px;gap:10px}.stat-icon{width:35px;height:35px;border-radius:11px;font-size:15px}
+  .stat-number{font-size:21px}.stat-label{font-size:11px}.section{margin-top:30px}
+  .section-head{align-items:flex-start}.panel{padding:16px}
+  .cards-grid,.roadmap-grid,.projects-grid{grid-template-columns:1fr}
+  .feature-card,.roadmap-card,.project-card{padding:16px}
+  .portfolio-head{padding:16px;gap:12px;align-items:flex-start}.portfolio-mark{width:44px;height:44px;border-radius:14px}
+  .portfolio-head .btn{padding:9px;font-size:12px}.arena-card{padding:16px;gap:12px}
+  .arena-icon{width:42px;height:42px}.footer{align-items:flex-start;flex-direction:column}
+  .form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+  .field input,.field select,.field textarea{font-size:16px}
+  .section-head .text-link{font-size:11px}
+  .toast{left:13px;right:13px;max-width:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="shell nav">
+    <a class="brand" href="#home" aria-label="Thoyajaksh's Career Hub home">
+      <img class="logo" src="logo.png" alt="TCH logo">
+      <span class="brand-name">THOYAJAKSH'S CAREER HUB<small>LEARN · BUILD · GROW · LAUNCH</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="#dashboard" class="active">Dashboard</a>
+      <a href="#opportunities">Opportunities</a>
+      <a href="#roadmaps">Roadmaps</a>
+      <a href="#arena">Placement Arena</a>
+      <a href="#portfolio">Portfolio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="date-chip" id="todayLabel">YOUR CAREER, IN MOTION</span>
+      <span class="user-chip"><span class="avatar">S</span><span>Student space</span></span>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main class="shell" id="home">
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span> YOUR CAREER LAUNCHPAD</span>
+      <h1 id="heroTitle">Prepare today.<br><span class="gradient">Build tomorrow.</span></h1>
+      <p>Your student-to-professional journey, in one place. Discover opportunities, follow focused skill roadmaps, practise for placements, and turn your projects into a portfolio that tells your story.</p>
+      <div class="actions">
+        <a class="btn primary" href="#opportunities">Explore Opportunities ↗</a>
+        <a class="btn secondary" href="#roadmaps">Explore Skill Roadmaps ↓</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit">
+        <div class="core">✦</div>
+        <div class="orbit-tag tag-one"><span>↗</span> CAREER GROWTH</div>
+        <div class="orbit-tag tag-two"><span>⌘</span> BUILD SKILLS</div>
+        <div class="orbit-tag tag-three"><span>◎</span> SHOW YOUR WORK</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Career dashboard statistics">
+    <div class="stat"><div class="stat-icon">◈</div><div><div class="stat-number" id="statTasks">0/4</div><div class="stat-label">Weekly goals completed</div></div></div>
+    <div class="stat"><div class="stat-icon">↗</div><div><div class="stat-number" id="statSaved">0</div><div class="stat-label">Saved opportunities</div></div></div>
+    <div class="stat"><div class="stat-icon">⌘</div><div><div class="stat-number" id="statRoadmaps">0/3</div><div class="stat-label">Roadmaps started</div></div></div>
+    <div class="stat"><div class="stat-icon">✦</div><div><div class="stat-number" id="statProjects">0</div><div class="stat-label">Portfolio projects</div></div></div>
+  </section>
+
+  <section class="section" id="dashboard">
+    <div class="section-head">
+      <div><div class="kicker">Your overview</div><h2>Career dashboard</h2><p class="section-desc">Small, consistent steps make a strong career story.</p></div>
+      <button class="text-link" id="resetTasks">Reset weekly goals ↻</button>
+    </div>
+    <div class="dashboard-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <div><div class="panel-title">This week’s momentum</div><div class="panel-sub">A simple checklist to keep you moving.</div></div>
+          <span class="badge" id="goalBadge">IN PROGRESS</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-ring" id="goalRing" style="--progress:0%"><strong id="goalPercent">0%</strong></div>
+          <div class="progress-copy">
+            <b id="goalHeadline">Start with one useful step.</b>
+            <p id="goalSub">Complete your weekly goals and track your momentum here.</p>
+            <div class="progress-bar"><span id="goalBar" style="width:0%"></span></div>
+          </div>
+        </div>
+        <div class="task-list" id="taskList">
+          <div class="task"><input type="checkbox" id="task1" data-task="0"><label for="task1">Update or review your résumé</label><span class="task-tag">PROFILE</span></div>
+          <div class="task"><input type="checkbox" id="task2" data-task="1"><label for="task2">Practise 3 aptitude questions</label><span class="task-tag">PRACTISE</span></div>
+          <div class="task"><input type="checkbox" id="task3" data-task="2"><label for="task3">Learn one skill-roadmap topic</label><span class="task-tag">LEARN</span></div>
+          <div class="task"><input type="checkbox" id="task4" data-task="3"><label for="task4">Improve one portfolio project</label><span class="task-tag">BUILD</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div><div class="panel-title">Your next best moves</div><div class="panel-sub">A practical starting point for this week.</div></div>
+          <span class="badge purple">QUICK PLAN</span>
+        </div>
+        <div class="activity-list">
+          <div class="activity"><div class="activity-icon">✎</div><div class="activity-copy"><b>Make your profile easy to scan</b><span>Add your skills, education, links, and strongest project to your résumé.</span></div></div>
+          <div class="activity"><div class="activity-icon">⌘</div><div class="activity-copy"><b>Choose one skill track</b><span>Pick a roadmap below and focus on its first step before adding another.</span></div></div>
+          <div class="activity"><div class="activity-icon">◎</div><div class="activity-copy"><b>Keep proof of your progress</b><span>Document what you built, what you learned, and how someone can try it.</span></div></div>
+          <div class="activity"><div class="activity-icon">↗</div><div class="activity-copy"><b>Apply thoughtfully</b><span>Check eligibility and deadlines on the official opportunity page before applying.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="career-tools">
+    <div class="section-head"><div><div class="kicker">Built for student growth</div><h2>Your career toolkit</h2><p class="section-desc">Five connected spaces for the college-to-career journey.</p></div></div>
+    <div class="cards-grid">
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">◈</div><span class="badge">01</span></div><h3>Career dashboard</h3><p>Keep goals, progress, and next steps visible so your preparation stays intentional.</p><div class="feature-foot"><span>Plan your week</span><a href="#dashboard">Open dashboard ↗</a></div></article>
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">↗</div><span class="badge green">02</span></div><h3>Internships & jobs</h3><p>Explore example opportunity categories, save interesting roles, and verify details at the source.</p><div class="feature-foot"><span>Find opportunities</span><a href="#opportunities">Browse roles ↗</a></div></article>
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">⌘</div><span class="badge purple">03</span></div><h3>Skill roadmaps</h3><p>Follow structured learning tracks for web development, data, and core programming.</p><div class="feature-foot"><span>Learn step by step</span><a href="#roadmaps">View roadmaps ↗</a></div></article>
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">⚡</div><span class="badge amber">04</span></div><h3>Placement arena</h3><p>Build a regular practice habit across aptitude, coding, résumé, and interview preparation.</p><div class="feature-foot"><span>Prepare with purpose</span><a href="#arena">Start practice ↗</a></div></article>
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">✦</div><span class="badge">05</span></div><h3>Project portfolio</h3><p>Showcase projects with clear descriptions, technologies, and links to your work.</p><div class="feature-foot"><span>Show what you can do</span><a href="#portfolio">Build portfolio ↗</a></div></article>
+      <article class="feature-card"><div class="feature-top"><div class="feature-icon">◎</div><span class="badge green">BONUS</span></div><h3>Keep it consistent</h3><p>Use the weekly checklist to turn long-term ambitions into manageable actions.</p><div class="feature-foot"><span>One step at a time</span><a href="#dashboard">Review goals ↗</a></div></article>
+    </div>
+  </section>
+
+  <section class="section" id="opportunities">
+    <div class="section-head">
+      <div><div class="kicker">Explore what’s next</div><h2>Internships & jobs</h2><p class="section-desc">Sample listings for the interface demo. Verify live openings, eligibility, pay, and deadlines on the linked platforms.</p></div>
+      <span class="badge green">STUDENT OPPORTUNITIES</span>
+    </div>
+    <div class="toolbar">
+      <div class="search"><input id="jobSearch" type="search" placeholder="Search role, skill, or company…" aria-label="Search opportunities"></div>
+      <select id="jobType" aria-label="Filter by opportunity type"><option value="all">All types</option><option value="Internship">Internships</option><option value="Entry-level">Entry-level jobs</option><option value="Remote">Remote-friendly</option></select>
+      <select id="jobDomain" aria-label="Filter by domain"><option value="all">All domains</option><option value="Development">Development</option><option value="Data">Data</option><option value="Design">Design</option><option value="Core">Core engineering</option></select>
+    </div>
+    <div class="job-grid" id="jobGrid">
+      <article class="job-card" data-title="Frontend Developer Intern" data-company="Startup teams" data-domain="Development" data-type="Internship" data-tags="HTML CSS JavaScript React">
+        <div class="job-top"><div class="company-logo">FE</div><div class="job-heading"><h3>Frontend Developer Intern</h3><div class="company">Startup teams · Example role</div></div><button class="save-btn" aria-label="Save Frontend Developer Intern" data-save="frontend">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Internship</span><span class="meta-chip">Development</span><span class="meta-chip">Portfolio-friendly</span></div>
+        <p>Build accessible web interfaces and learn to work with real product requirements.</p>
+        <div class="job-bottom"><small>Eligibility & dates vary</small><a class="btn secondary" href="https://www.linkedin.com/jobs/" target="_blank" rel="noopener noreferrer">Find roles ↗</a></div>
+      </article>
+      <article class="job-card" data-title="Data Analyst Intern" data-company="Analytics teams" data-domain="Data" data-type="Internship" data-tags="Excel SQL Python dashboards">
+        <div class="job-top"><div class="company-logo">DA</div><div class="job-heading"><h3>Data Analyst Intern</h3><div class="company">Analytics teams · Example role</div></div><button class="save-btn" aria-label="Save Data Analyst Intern" data-save="data">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Internship</span><span class="meta-chip">Data</span><span class="meta-chip">SQL / Python</span></div>
+        <p>Explore datasets, answer practical questions, and present findings with clear visuals.</p>
+        <div class="job-bottom"><small>Check required skills</small><a class="btn secondary" href="https://internshala.com/" target="_blank" rel="noopener noreferrer">Find roles ↗</a></div>
+      </article>
+      <article class="job-card" data-title="Graduate Software Engineer" data-company="Product companies" data-domain="Development" data-type="Entry-level" data-tags="DSA Java Python problem solving">
+        <div class="job-top"><div class="company-logo">SE</div><div class="job-heading"><h3>Graduate Software Engineer</h3><div class="company">Product companies · Example role</div></div><button class="save-btn" aria-label="Save Graduate Software Engineer" data-save="graduate">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Entry-level</span><span class="meta-chip">Development</span><span class="meta-chip">Problem solving</span></div>
+        <p>Prepare for entry-level engineering roles with fundamentals, coding, and teamwork.</p>
+        <div class="job-bottom"><small>Review graduate criteria</small><a class="btn secondary" href="https://www.linkedin.com/jobs/" target="_blank" rel="noopener noreferrer">Find roles ↗</a></div>
+      </article>
+      <article class="job-card" data-title="UI UX Design Intern" data-company="Design studios" data-domain="Design" data-type="Internship" data-tags="Figma UI UX research prototyping">
+        <div class="job-top"><div class="company-logo">UX</div><div class="job-heading"><h3>UI/UX Design Intern</h3><div class="company">Design studios · Example role</div></div><button class="save-btn" aria-label="Save UI UX Design Intern" data-save="ux">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Internship</span><span class="meta-chip">Design</span><span class="meta-chip">Figma</span></div>
+        <p>Practise user research, wireframes, prototypes, and explaining design decisions.</p>
+        <div class="job-bottom"><small>Portfolio usually helps</small><a class="btn secondary" href="https://internshala.com/" target="_blank" rel="noopener noreferrer">Find roles ↗</a></div>
+      </article>
+      <article class="job-card" data-title="Core Engineering Trainee" data-company="Engineering firms" data-domain="Core" data-type="Entry-level" data-tags="CAD electronics mechanical fundamentals">
+        <div class="job-top"><div class="company-logo">CE</div><div class="job-heading"><h3>Core Engineering Trainee</h3><div class="company">Engineering firms · Example role</div></div><button class="save-btn" aria-label="Save Core Engineering Trainee" data-save="core">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Entry-level</span><span class="meta-chip">Core engineering</span><span class="meta-chip">Fundamentals</span></div>
+        <p>Look for trainee opportunities aligned with your branch, labs, and practical skills.</p>
+        <div class="job-bottom"><small>Branch criteria may apply</small><a class="btn secondary" href="https://www.naukri.com/" target="_blank" rel="noopener noreferrer">Find roles ↗</a></div>
+      </article>
+      <article class="job-card" data-title="Remote Open-Source Contributor" data-company="Open-source projects" data-domain="Development" data-type="Remote" data-tags="Git GitHub documentation collaboration">
+        <div class="job-top"><div class="company-logo">OS</div><div class="job-heading"><h3>Remote Open-Source Contributor</h3><div class="company">Open-source projects · Example path</div></div><button class="save-btn" aria-label="Save Remote Open-Source Contributor" data-save="opensource">♡</button></div>
+        <div class="job-meta"><span class="meta-chip">Remote-friendly</span><span class="meta-chip">Development</span><span class="meta-chip">Git / GitHub</span></div>
+        <p>Build collaboration experience by contributing fixes, docs, or small features to public projects.</p>
+        <div class="job-bottom"><small>Start with beginner issues</small><a class="btn secondary" href="https://github.com/topics/good-first-issue" target="_blank" rel="noopener noreferrer">Explore ↗</a></div>
+      </article>
+      <div class="empty" id="jobEmpty">No matching opportunities. Try a different search or filter.</div>
+    </div>
+  </section>
+
+  <section class="section" id="roadmaps">
+    <div class="section-head"><div><div class="kicker">Learn with direction</div><h2>Skill roadmaps</h2><p class="section-desc">Choose a track, mark completed steps, and build evidence as you learn.</p></div><span class="badge purple">SELF-PACED</span></div>
+    <div class="roadmap-grid" id="roadmapGrid">
+      <article class="roadmap-card" data-roadmap="web">
+        <div class="roadmap-head"><div class="feature-icon">⌘</div><span class="badge">WEB</span></div>
+        <h3>Web Development</h3><p>From web fundamentals to a deployed, responsive project.</p>
+        <div class="progress-bar"><span id="bar-web" style="width:0%"></span></div>
+        <div class="roadmap-foot"><span id="count-web">0 of 4 steps</span><button class="text-link roadmap-reset" data-reset="web">Reset</button></div>
+        <div class="roadmap-steps">
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="web" data-step="0"><span class="step-dot">1</span> HTML & semantic structure</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="web" data-step="1"><span class="step-dot">2</span> CSS & responsive layouts</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="web" data-step="2"><span class="step-dot">3</span> JavaScript fundamentals</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="web" data-step="3"><span class="step-dot">4</span> Build, test & deploy a project</label>
+        </div>
+      </article>
+      <article class="roadmap-card" data-roadmap="data">
+        <div class="roadmap-head"><div class="feature-icon">▥</div><span class="badge green">DATA</span></div>
+        <h3>Data Analytics</h3><p>Learn to clean data, ask questions, and communicate insights.</p>
+        <div class="progress-bar"><span id="bar-data" style="width:0%"></span></div>
+        <div class="roadmap-foot"><span id="count-data">0 of 4 steps</span><button class="text-link roadmap-reset" data-reset="data">Reset</button></div>
+        <div class="roadmap-steps">
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="data" data-step="0"><span class="step-dot">1</span> Spreadsheet fundamentals</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="data" data-step="1"><span class="step-dot">2</span> SQL queries & joins</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="data" data-step="2"><span class="step-dot">3</span> Python & data cleaning</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="data" data-step="3"><span class="step-dot">4</span> Visualise & present findings</label>
+        </div>
+      </article>
+      <article class="roadmap-card" data-roadmap="coding">
+        <div class="roadmap-head"><div class="feature-icon">⌘</div><span class="badge amber">CODING</span></div>
+        <h3>Placement Coding</h3><p>Strengthen programming basics and structured problem-solving.</p>
+        <div class="progress-bar"><span id="bar-coding" style="width:0%"></span></div>
+        <div class="roadmap-foot"><span id="count-coding">0 of 4 steps</span><button class="text-link roadmap-reset" data-reset="coding">Reset</button></div>
+        <div class="roadmap-steps">
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="coding" data-step="0"><span class="step-dot">1</span> One language & core syntax</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="coding" data-step="1"><span class="step-dot">2</span> Arrays, strings & hashing</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="coding" data-step="2"><span class="step-dot">3</span> Trees, graphs & recursion</label>
+          <label class="roadmap-step"><input type="checkbox" class="sr-only" data-road="coding" data-step="3"><span class="step-dot">4</span> Timed practice & review</label>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="arena">
+    <div class="section-head"><div><div class="kicker">Practice makes progress</div><h2>Placement arena</h2><p class="section-desc">Practice areas to build confidence before tests, interviews, and applications.</p></div></div>
+    <div class="arena-grid">
+      <article class="arena-card">
+        <div class="arena-icon">⚡</div>
+        <div class="arena-copy">
+            <h3>Aptitude & reasoning</h3>
+          <p>Practise quantitative aptitude, logical reasoning, and verbal ability in short, regular sessions.</p>
+          <div class="arena-meta"><span class="meta-chip">Quant</span><span class="meta-chip">Logic</span><span class="meta-chip">Verbal</span></div>
+          <a class="btn secondary small" href="https://www.indiabix.com/" target="_blank" rel="noopener noreferrer">Practise questions ↗</a>
+        </div>
+      </article>
+      <article class="arena-card">
+        <div class="arena-icon">⌘</div>
+        <div class="arena-copy">
+          <h3>Coding practice</h3>
+          <p>Solve problems on arrays, strings, recursion, and data structures, then review what you missed.</p>
+          <div class="arena-meta"><span class="meta-chip">DSA</span><span class="meta-chip">Problem solving</span><span class="meta-chip">Timed sets</span></div>
+          <a class="btn secondary small" href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer">Solve problems ↗</a>
+        </div>
+      </article>
+      <article class="arena-card">
+        <div class="arena-icon">✎</div>
+        <div class="arena-copy">
+          <h3>Résumé check</h3>
+          <p>Review your résumé against a short checklist so recruiters can scan it quickly.</p>
+          <div class="arena-meta"><span class="meta-chip">One page</span><span class="meta-chip">Projects</span><span class="meta-chip">Links</span></div>
+          <button class="btn secondary small" type="button" data-modal="resumeModal">Open checklist ↗</button>
+        </div>
+      </article>
+      <article class="arena-card">
+        <div class="arena-icon">◎</div>
+        <div class="arena-copy">
+          <h3>Interview preparation</h3>
+          <p>Rehearse common questions out loud and prepare a clear story for each project.</p>
+          <div class="arena-meta"><span class="meta-chip">HR round</span><span class="meta-chip">Technical</span><span class="meta-chip">Projects</span></div>
+          <button class="btn secondary small" type="button" data-modal="interviewModal">Open question list ↗</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="portfolio">
+    <div class="section-head"><div><div class="kicker">Show your work</div><h2>Project portfolio</h2><p class="section-desc">Add projects with a clear description, the technologies you used, and a link.</p></div></div>
+    <div class="portfolio-head">
+      <div class="portfolio-mark">✦</div>
+      <div class="portfolio-copy"><h3>Your projects</h3><p>Projects you add are saved in this browser.</p></div>
+      <span class="badge" id="portfolioCount">0 PROJECTS</span>
+      <button class="btn primary" id="addProjectBtn" type="button">+ Add project</button>
+    </div>
+    <div class="projects-grid" id="projectsGrid">
+      <article class="project-card">
+        <div class="project-art">◈</div>
+        <span class="badge amber">IDEA</span>
+        <h3>Personal portfolio website</h3>
+        <p>A responsive site that introduces you, lists your skills, and links to your best work.</p>
+        <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+        <div class="project-actions"><button class="btn secondary small" type="button" data-project-idea="Personal portfolio website">Add to portfolio</button></div>
+      </article>
+      <article class="project-card">
+        <div class="project-art">▥</div>
+        <span class="badge amber">IDEA</span>
+        <h3>Expense tracker</h3>
+        <p>Track daily spending by category and show a simple monthly summary chart.</p>
+        <div class="project-tags"><span>JavaScript</span><span>Charts</span><span>Local storage</span></div>
+        <div class="project-actions"><button class="btn secondary small" type="button" data-project-idea="Expense tracker">Add to portfolio</button></div>
+      </article>
+      <article class="project-card">
+        <div class="project-art">⌘</div>
+        <span class="badge amber">IDEA</span>
+        <h3>Data insights dashboard</h3>
+        <p>Clean a public dataset and present three clear findings with visuals.</p>
+        <div class="project-tags"><span>Python</span><span>SQL</span><span>Visualisation</span></div>
+        <div class="project-actions"><button class="btn secondary small" type="button" data-project-idea="Data insights dashboard">Add to portfolio</button></div>
+      </article>
+      <div class="empty" id="projectEmpty">No projects yet. Add your first project to start building your portfolio.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span><strong>TCH · Thoyajaksh's Career Hub</strong> — learn, build, grow, launch.</span>
+    <span>Opportunity listings are examples. Always verify details on the official page.</span>
+  </footer>
+</main>
+
+<!-- Add project modal -->
+<div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="projectModalTitle">Add a project</h3>
+      <button class="close-modal" type="button" data-close aria-label="Close">✕</button>
+    </div>
+    <form id="projectForm">
+      <div class="form-grid">
+        <div class="field full"><label for="projectName">Project name</label><input id="projectName" type="text" required maxlength="80" placeholder="e.g. Expense tracker"></div>
+        <div class="field"><label for="projectTech">Technologies (comma separated)</label><input id="projectTech" type="text" maxlength="120" placeholder="HTML, CSS, JavaScript"></div>
+        <div class="field"><label for="projectStatus">Status</label>
+          <select id="projectStatus"><option>In progress</option><option>Planned</option><option>Completed</option></select>
+        </div>
+        <div class="field full"><label for="projectDescription">Description</label><textarea id="projectDescription" maxlength="400" placeholder="What does it do, and what did you learn?"></textarea></div>
+        <div class="field full"><label for="projectLink">Project link (optional)</label><input id="projectLink" type="url" placeholder="https://github.com/you/project"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn secondary" type="button" data-close>Cancel</button>
+        <button class="btn primary" type="submit">Save project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Résumé checklist modal -->
+<div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="resumeModalTitle">Résumé checklist</h3>
+      <button class="close-modal" type="button" data-close aria-label="Close">✕</button>
+    </div>
+    <p class="modal-note">Check each point before you send your résumé.</p>
+    <ul>
+      <li>Fits on one page and uses a clean, readable font.</li>
+      <li>Contact details, GitHub or LinkedIn links are correct and clickable.</li>
+      <li>Skills are grouped (languages, tools, frameworks) and match the role.</li>
+      <li>Each project says what you built, which technologies you used, and the result.</li>
+      <li>Education, achievements, and certificates are listed with dates.</li>
+      <li>No spelling errors; saved as a PDF with a clear file name.</li>
+    </ul>
+    <div class="form-actions"><button class="btn secondary" type="button" data-close>Close</button></div>
+  </div>
+</div>
+
+<!-- Interview questions modal -->
+<div class="modal-backdrop" id="interviewModal" role="dialog" aria-modal="true" aria-labelledby="interviewModalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="interviewModalTitle">Interview practice</h3>
+      <button class="close-modal" type="button" data-close aria-label="Close">✕</button>
+    </div>
+    <p class="modal-note">Practise answering these out loud, in under two minutes each.</p>
+    <ul>
+      <li>Tell me about yourself.</li>
+      <li>Walk me through your strongest project. What was hard, and how did you solve it?</li>
+      <li>Why this role and this company?</li>
+      <li>Describe a time you worked in a team and handled a disagreement.</li>
+      <li>Explain a technical concept you know well as if to a beginner.</li>
+      <li>Where do you want to be in three years, and what are you doing to get there?</li>
+    </ul>
+    <div class="form-actions"><button class="btn secondary" type="button" data-close>Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const STORAGE_KEY = 'thoyajakshCareerHub_v1';
+
+  const makeDefaults = () => ({
+    tasks: [false, false, false, false],
+    saved: [],
+    roadmaps: {
+      web: [false, false, false, false],
+      data: [false, false, false, false],
+      coding: [false, false, false, false]
+    },
+    projects: []
+  });
+
+  let state = loadState();
+
+  function loadState() {
+    const base = makeDefaults();
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      if (Array.isArray(saved.tasks) && saved.tasks.length === 4) base.tasks = saved.tasks.map(Boolean);
+      if (Array.isArray(saved.saved)) base.saved = saved.saved;
+      if (saved.roadmaps && typeof saved.roadmaps === 'object') {
+        Object.keys(base.roadmaps).forEach(key => {
+          const steps = saved.roadmaps[key];
+          if (Array.isArray(steps) && steps.length === 4) base.roadmaps[key] = steps.map(Boolean);
+        });
+      }
+      if (Array.isArray(saved.projects)) base.projects = saved.projects;
+    } catch (error) {
+      // Fall back to defaults.
+    }
+    return base;
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      // The page remains usable if local storage is unavailable.
+    }
+  }
+
+  let toastTimer;
+
+  function toast(message) {
+    const el = $('#toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  }
+
+  function updateDashboard() {
+    const completed = state.tasks.filter(Boolean).length;
+    const percent = Math.round(completed / 4 * 100);
+
+    $('#statTasks').textContent = `${completed}/4`;
+    $('#goalPercent').textContent = `${percent}%`;
+    $('#goalRing').style.setProperty('--progress', `${percent}%`);
+    $('#goalBar').style.width = `${percent}%`;
+
+    $('#goalHeadline').textContent =
+      percent === 100
+        ? 'Excellent work — all goals complete!'
+        : percent >= 50
+          ? 'You’re building real momentum.'
+          : 'Start with one useful step.';
+
+    $('#goalSub').textContent =
+      percent === 100
+        ? 'Take a moment to review what worked and plan your next week.'
+        : `${4 - completed} weekly goal${4 - completed === 1 ? '' : 's'} left to complete.`;
+
+    $('#goalBadge').textContent =
+      percent === 100 ? 'GOALS COMPLETE' :
+      percent === 0 ? 'READY TO START' : 'IN PROGRESS'
+     $$('#taskList .task').forEach((row, i) => {
+      row.classList.toggle('done', !!state.tasks[i]);
+      const input = $('input', row);
+      if (input && input.dataset.task !== undefined) {
+        input.checked = !!state.tasks[Number(input.dataset.task)];
+      }
+    });
+
+    const roadmapsStarted = Object.values(state.roadmaps)
+      .filter(steps => steps.some(Boolean)).length;
+
+    $('#statSaved').textContent = state.saved.length;
+    $('#statRoadmaps').textContent = `${roadmapsStarted}/3`;
+    $('#statProjects').textContent = state.projects.length;
+  }
+
+  function updateRoadmaps() {
+    Object.entries(state.roadmaps).forEach(([name, steps]) => {
+      const done = steps.filter(Boolean).length;
+      const bar = $(`#bar-${name}`);
+      const count = $(`#count-${name}`);
+
+      if (bar) bar.style.width = `${done / steps.length * 100}%`;
+      if (count) count.textContent = `${done} of ${steps.length} steps`;
+
+      $$(`[data-road="${name}"]`).forEach(input => {
+        input.checked = !!steps[Number(input.dataset.step)];
+
+        const row = input.closest('.roadmap-step');
+        row.classList.toggle('done', input.checked);
+        row.classList.toggle(
+          'active',
+          !input.checked &&
+          Number(input.dataset.step) === steps.findIndex(v => !v)
+        );
+
+        const dot = $('.step-dot', row);
+        dot.textContent = input.checked
+          ? '✓'
+          : String(Number(input.dataset.step) + 1);
+      });
+    });
+
+    updateDashboard();
+  }
+
+  function updateSaved() {
+    $$('[data-save]').forEach(btn => {
+      const isSaved = state.saved.includes(btn.dataset.save);
+      btn.classList.toggle('saved', isSaved);
+      btn.textContent = isSaved ? '♥' : '♡';
+      btn.setAttribute('aria-pressed', String(isSaved));
+    });
+
+    updateDashboard();
+  }
+
+  function renderProjects() {
+    const grid = $('#projectsGrid');
+    $$('.custom-project', grid).forEach(el => el.remove());
+
+    state.projects.forEach((project, index) => {
+      const card = document.createElement('article');
+      card.className = 'project-card custom-project';
+
+      const art = document.createElement('div');
+      art.className = 'project-art';
+      art.textContent = '✦';
+
+      const badge = document.createElement('span');
+      badge.className = 'badge ' +
+        (project.status === 'Completed' ? 'green' :
+        project.status === 'Planned' ? 'amber' : 'purple');
+      badge.textContent = String(project.status || 'In progress').toUpperCase();
+
+      const title = document.createElement('h3');
+      title.textContent = project.name;
+
+      const description = document.createElement('p');
+      description.textContent = project.description ||
+        'Add a short description to explain the purpose and value of this project.';
+
+      const tags = document.createElement('div');
+      tags.className = 'project-tags';
+
+      (project.tech || 'Student project')
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean)
+        .slice(0, 5)
+        .forEach(item => {
+          const tag = document.createElement('span');
+          tag.textContent = item;
+          tags.appendChild(tag);
+        });
+
+      const actions = document.createElement('div');
+      actions.className = 'project-actions';
+
+      if (project.link && /^https?:\/\//i.test(project.link)) {
+        const link = document.createElement('a');
+        link.className = 'btn secondary small';
+        link.textContent = 'Open project ↗';
+        link.href = project.link;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        actions.appendChild(link);
+      }
+
+      const remove = document.createElement('button');
+      remove.className = 'btn secondary small';
+      remove.type = 'button';
+      remove.textContent = 'Remove';
+
+      remove.addEventListener('click', () => {
+        state.projects.splice(index, 1);
+        persist();
+        renderProjects();
+        toast('Project removed.');
+      });
+
+      actions.appendChild(remove);
+      card.append(art, badge, title, description, tags, actions);
+      grid.insertBefore(card, $('#projectEmpty'));
+    });
+
+    $('#projectEmpty').style.display =
+      state.projects.length ? 'none' : 'block';
+
+    $('#portfolioCount').textContent =
+      `${state.projects.length} PROJECT${state.projects.length === 1 ? '' : 'S'}`;
+
+    updateDashboard();
+  }
+
+  function filterJobs() {
+    const query = $('#jobSearch').value.trim().toLowerCase();
+    const type = $('#jobType').value;
+    const domain = $('#jobDomain').value;
+    let visible = 0;
+
+    $$('.job-card').forEach(card => {
+      const text = (
+        card.dataset.title + ' ' +
+        card.dataset.company + ' ' +
+        card.dataset.tags + ' ' +
+        card.dataset.domain
+      ).toLowerCase();
+
+      const typeMatches =
+        type === 'all' ||
+        card.dataset.type === type ||
+        (type === 'Remote' &&
+          /remote/i.test(card.dataset.title + ' ' + card.dataset.tags));
+
+      const domainMatches =
+        domain === 'all' || card.dataset.domain === domain;
+
+      const show = text.includes(query) && typeMatches && domainMatches;
+      card.style.display = show ? '' : 'none';
+
+      if (show) visible++;
+    });
+
+    $('#jobEmpty').style.display = visible ? 'none' : 'block';
+  }
+
+  function openModal(id) {
+    const modal = $(`#${id}`);
+
+    if (modal) {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      // Skip auto-focus on phones so the keyboard doesn't pop open.
+      if (window.matchMedia('(min-width: 821px)').matches) {
+        const focusable = $('input, button, textarea, select', modal);
+        if (focusable) focusable.focus();
+      }
+    }
+  }
+
+  function closeModal(element) {
+    const modal = element.closest('.modal-backdrop');
+
+    if (modal) {
+      modal.classList.remove('open');
+      if (!$('.modal-backdrop.open')) document.body.style.overflow = '';
+    }
+  }
+
+  // Weekly goals
+  $$('#taskList input[data-task]').forEach(input => {
+    input.addEventListener('change', () => {
+      state.tasks[Number(input.dataset.task)] = input.checked;
+      persist();
+      updateDashboard();
+    });
+  });
+
+  $('#resetTasks').addEventListener('click', () => {
+    state.tasks = [false, false, false, false];
+    persist();
+    updateDashboard();
+    toast('Weekly goals reset.');
+  });
+
+  // Skill roadmap progress
+  $$('[data-road]').forEach(input => {
+    input.addEventListener('change', () => {
+      state.roadmaps[input.dataset.road][Number(input.dataset.step)] =
+        input.checked;
+
+      persist();
+      updateRoadmaps();
+    });
+  });
+
+  $$('.roadmap-reset').forEach(button => {
+    button.addEventListener('click', () => {
+      state.roadmaps[button.dataset.reset] = [false, false, false, false];
+      persist();
+      updateRoadmaps();
+      toast('Roadmap progress reset.');
+    });
+  });
+
+  // Save opportunities
+  $$('[data-save]').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.save;
+
+      state.saved = state.saved.includes(id)
+        ? state.saved.filter(item => item !== id)
+        : [...state.saved, id];
+
+      persist();
+      updateSaved();
+
+      toast(
+        state.saved.includes(id)
+          ? 'Opportunity saved.'
+          : 'Opportunity removed from saved list.'
+      );
+    });
+  });
+
+  // Opportunity search and filters
+  $('#jobSearch').addEventListener('input', filterJobs);
+  $('#jobType').addEventListener('change', filterJobs);
+  $('#jobDomain').addEventListener('change', filterJobs);
+
+  // Portfolio
+  $('#addProjectBtn').addEventListener('click', () => {
+    openModal('projectModal');
+  });
+
+  $$('[data-project-idea]').forEach(button => {
+    button.addEventListener('click', () => {
+      $('#projectName').value = button.dataset.projectIdea;
+      $('#projectTech').value = '';
+      $('#projectDescription').value = '';
+      $('#projectLink').value = '';
+      $('#projectStatus').value = 'Planned';
+      openModal('projectModal');
+    });
+  });
+
+  $('#projectForm').addEventListener('submit', event => {
+    event.preventDefault();
+
+    const name = $('#projectName').value.trim();
+    if (!name) return;
+
+    const link = $('#projectLink').value.trim();
+
+    if (link && !/^https?:\/\//i.test(link)) {
+      toast('Please enter a valid link beginning with https:// or http://');
+      return;
+    }
+
+    state.projects.push({
+      name,
+      tech: $('#projectTech').value.trim(),
+      status: $('#projectStatus').value,
+      description: $('#projectDescription').value.trim(),
+      link
+    });
+
+    persist();
+    renderProjects();
+    event.target.reset();
+    closeModal($('#projectModal'));
+    toast('Project added to your portfolio.');
+  });
+
+  // Modals
+  $$('[data-modal]').forEach(button => {
+    button.addEventListener('click', () => openModal(button.dataset.modal));
+  });
+
+  $$('[data-close]').forEach(button => {
+    button.addEventListener('click', () => closeModal(button));
+  });
+
+  $$('.modal-backdrop').forEach(backdrop => {
+    backdrop.addEventListener('click', event => {
+      if (event.target === backdrop) closeModal(backdrop);
+    });
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      $$('.modal-backdrop.open').forEach(modal => closeModal(modal));
+    }
+  });
+
+  // Mobile navigation
+  $('#menuToggle').addEventListener('click', () => {
+    const nav = $('#navLinks');
+    const isOpen = nav.classList.toggle('open');
+
+    $('#menuToggle').setAttribute('aria-expanded', String(isOpen));
+    $('#menuToggle').textContent = isOpen ? '✕' : '☰';
+  });
+
+  $$('#navLinks a').forEach(link => {
+    link.addEventListener('click', () => {
+      $('#navLinks').classList.remove('open');
+      $('#menuToggle').setAttribute('aria-expanded', 'false');
+      $('#menuToggle').textContent = '☰';
+
+      $$('#navLinks a').forEach(item => {
+        item.classList.toggle('active', item === link);
+      });
+    });
+  });
+
+  // Highlight the nav link for the section in view while scrolling
+  if ('IntersectionObserver' in window) {
+    const navMap = {};
+    $$('#navLinks a').forEach(a => { navMap[a.getAttribute('href').slice(1)] = a; });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && navMap[entry.target.id]) {
+          $$('#navLinks a').forEach(a => a.classList.toggle('active', a === navMap[entry.target.id]));
+        }
+      });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+
+    Object.keys(navMap).forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  }
+
+  // Current date and initial rendering
+  $('#todayLabel').textContent = new Intl.DateTimeFormat(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  }).format(new Date()).toUpperCase();
+
+  updateDashboard();
+  updateRoadmaps();
+  updateSaved();
+  renderProjects();
+})();
+</script>
+</body>
+</html>
+
+  
+      
